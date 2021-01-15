@@ -16,6 +16,7 @@
     "react-dom": "^17.0.1",
     "react-flow-renderer": "^8.3.7",
     "react-scripts": "4.0.1",
+    "react-tooltip": "^4.2.13",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
