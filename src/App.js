@@ -7,7 +7,13 @@ window.drawStatusTree = (str) => {
 }
 
 function App() {
-  return <DrawTree />
+  return <div>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis mollitia! Nobis possimus tempora reiciendis quia blanditiis neque, quas, quod illo quaerat ducimus, soluta veniam ipsum repellendus minus expedita culpa.
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis mollitia! Nobis possimus tempora reiciendis quia blanditiis neque, quas, quod illo quaerat ducimus, soluta veniam ipsum repellendus minus expedita culpa.
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis mollitia! Nobis possimus tempora reiciendis quia blanditiis neque, quas, quod illo quaerat ducimus, soluta veniam ipsum repellendus minus expedita culpa.
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis mollitia! Nobis possimus tempora reiciendis quia blanditiis neque, quas, quod illo quaerat ducimus, soluta veniam ipsum repellendus minus expedita culpa.
+      <DrawTree />
+  </div>
 }
 
 export default App;
