@@ -7,7 +7,7 @@ window.drawStatusTree = (str) => {
 }
 
 function App() {
-  return null
+  return <DrawTree />
 }
 
 export default App;
