@@ -7,6 +7,11 @@ window.drawStatusTree = (str) => {
 }
 
 function App() {
+  React.useEffect(() => {
+    setTimeout(() => {
+      window.postMessage(`${document.getElementById('root').innerHTML}`)
+    }, 4000);
+  }, []);
   return <div>
     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis mollitia! Nobis possimus tempora reiciendis quia blanditiis neque, quas, quod illo quaerat ducimus, soluta veniam ipsum repellendus minus expedita culpa.
     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit, reiciendis mollitia! Nobis possimus tempora reiciendis quia blanditiis neque, quas, quod illo quaerat ducimus, soluta veniam ipsum repellendus minus expedita culpa.
