@@ -1,8 +1,9 @@
 /* eslint-disable new-cap */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
-import dagreD3 from 'dagre-d3';
-import * as d3 from 'd3';
+// import dagreD3 from 'dagre-d3';
+// import * as d3 from 'd3';
+import dagre from 'dagre';
 import uniq from 'lodash/uniq';
 import getEnds from './getEnds';
 import getAdditionalLinking from './getAdditionalLinks';
@@ -12,9 +13,9 @@ import getCurrentPointsIndx from './getCurrentPointsIndx';
 import arrify from './arrify';
 
 
-export default function (acts, history, branchesStatuses, svgRef, containerWidth) {
-  const g = new dagreD3.graphlib.Graph()
-    .setGraph({})
+export default function draw(acts, history, branchesStatuses, svgRef, containerWidth) {
+  const g = new dagre.graphlib.Graph()
+    .setGraph({ ranksep: 100 })
     .setDefaultEdgeLabel(() => ({}));
 
   const activities = acts.map(act => ({ ...act }));
@@ -69,52 +70,58 @@ export default function (acts, history, branchesStatuses, svgRef, containerWidth
   activitiesOfIntersec.forEach((act) => {
     const isDone = prevIndxs.includes(act.index);
     g.setNode(act.index, {
-      class: isDone ? 'done' : '',
-      title: act.activityName,
-      label: act.activityName.length > 27 ? `...${act.activityName.slice(0, 24)}` : act.activityName,
+      width: 200,
+      height: 50,
+      isDone,
+      // class: isDone ? 'done' : '',
+      // title: act.activityName,
+      // label: act.activityName.length > 27 ? `...${act.activityName.slice(0, 24)}` : act.activityName,
     });
   });
-  g.nodes().forEach((v) => {
-    const node = g.node(v);
-    node.rx = 5;
-    node.ry = 5;
-  });
+  // g.nodes().forEach((v) => {
+  //   const node = g.node(v);
+  //   node.rx = 5;
+  //   node.ry = 5;
+  // });
   activitiesOfIntersec.forEach((act) => {
     const withPrev = act.previousIndexArray;
     if (withPrev) {
       return (withPrev).forEach((prev) => {
         if (!intersecMap[prev]) return;
         g.setEdge(prev, act.index, {
-          arrowheadClass: 'arrowhead',
+          // arrowheadClass: 'arrowhead',
           // label: activities[prev].rootActivity ? 'اسم البرانش' : '',
-          curve: d3.curveBasis,
+          // curve: d3.curveBasis,
         });
       });
     }
   });
-
-  // Create the renderer
-  const render = new dagreD3.render();
-
-  // Set up an SVG group so that we can translate the final graph.
-  const svg = d3.select(svgRef);
-  const svgGroup = svg.append('g');
-
-  const zoom = d3.zoom()
-    .on('zoom', (e) => {
-      svgGroup.attr('transform', e.transform);
-    });
-  svg.call(zoom);
-  // Run the renderer. This is what draws the final graph.
-  render(d3.select('svg g'), g);
-  d3.selectAll('g.node').attr('data-tip', v => g.node(v).title);
-  // Center the graph
-  svg.attr('width', containerWidth);
-  // svg.attr('margin', 'auto');
-  const xCenterOffset = (svg.attr('width') - g.graph().width) / 2;
-  svgGroup.attr('transform', `translate(${xCenterOffset}, 20)`);
-  svg.attr('height', g.graph().height + 40);
+  dagre.layout(g);
+  // console.log(g, g.nodes());
+  return [g, indxs];
 }
+// Create the renderer
+//   const render = new dagreD3.render();
+
+//   // Set up an SVG group so that we can translate the final graph.
+//   const svg = d3.select(svgRef);
+//   const svgGroup = svg.append('g');
+
+//   const zoom = d3.zoom()
+//     .on('zoom', (e) => {
+//       svgGroup.attr('transform', e.transform);
+//     });
+//   svg.call(zoom);
+//   // Run the renderer. This is what draws the final graph.
+//   render(d3.select('svg g'), g);
+//   d3.selectAll('g.node').attr('data-tip', v => g.node(v).title);
+//   // Center the graph
+//   svg.attr('width', containerWidth);
+//   // svg.attr('margin', 'auto');
+//   const xCenterOffset = (svg.attr('width') - g.graph().width) / 2;
+//   svgGroup.attr('transform', `translate(${xCenterOffset}, 20)`);
+//   svg.attr('height', g.graph().height + 40);
+// }
 
 // const activities = acts.map(act => ({ ...act, children: [] }));
 // const activitiesMap = getActivitiesMap(activities);
@@ -235,4 +242,4 @@ export default function (acts, history, branchesStatuses, svgRef, containerWidth
 
 
 // // const getPathPart = (str, postFix = '', def = '') => (str ? `${str}${postFix}` : def);
-// //
+//
